@@ -1,89 +1,79 @@
-function getComputerChoise() {
+function getComputerChoice() {
    let random = Math.random();
-   if (random <= 0.4) {
+   if (random <= 1/3) {
       return "rock";
-   } else if (random <= 0.7) {
+   } else if (random <= 2/3) {
       return "paper";
    } else {
       return "scissors";
    }
 }
 
-function getHumanChoise() {
-   let userChoice = prompt("rock, paper, scissors. You Choose:");
-   if (userChoice == "rock") {
-      return "rock";
-   } else if (userChoice == "paper") {
-      return "paper";
+let humanScore = 0;
+let computerScore = 0;
+
+function playRound(humanChoice, computerChoice) {
+   if (humanChoice == "paper" && computerChoice == "rock") {
+      humanScore++;
+      return `${humanScore} : ${computerScore}`;
+   } else if (humanChoice == "rock" && computerChoice == "paper") {
+      computerScore++;
+      return `${humanScore} : ${computerScore}`;
+   } else if (humanChoice == "scissors" && computerChoice == "paper") {
+      humanScore++;
+      return `${humanScore} : ${computerScore}`;
+   } else if (humanChoice == "paper" && computerChoice == "scissors") {
+      computerScore++;
+      return `${humanScore} : ${computerScore}`;
+   } else if (humanChoice == "rock" && computerChoice == "scissors") {
+      humanScore++;
+      return `${humanScore} : ${computerScore}`;
+   } else if (humanChoice == "scissors" && computerChoice == "rock") {
+      computerScore++;
+      return `${humanScore} : ${computerScore}`;
    } else {
-      return "scissors";
+      return (`${humanScore} : ${computerScore}`);
    }
 }
 
-function playGame() {
-   let humanScore = 0;
-   let computerScore = 0;
-   function playRound(humanChoise, computerChoise) {
-      if (humanChoise == "paper" && computerChoise == "rock") {
-         humanScore++;
-         return `${humanScore} : ${computerScore}`;
-      } else if (humanChoise == "rock" && computerChoise == "paper") {
-         computerScore++;
-         return `${humanScore} : ${computerScore}`;
-      } else if (humanChoise == "scissors" && computerChoise == "paper") {
-         humanScore++;
-         return `${humanScore} : ${computerScore}`;
-      } else if (humanChoise == "paper" && computerChoise == "scissors") {
-         computerScore++;
-         return `${humanScore} : ${computerScore}`;
-      } else if (humanChoise == "rock" && computerChoise == "scissors") {
-         humanScore++;
-         return `${humanScore} : ${computerScore}`;
-      } else if (humanChoise == "scissors" && computerChoise == "rock") {
-         computerScore++;
-         return `${humanScore} : ${computerScore}`;
-      } else {
-         return `${humanScore} : ${computerScore}`;
-      }
-   }
-   let humanChoise1 = getHumanChoise();
-   let humanChoise2 = getHumanChoise();
-   let humanChoise3 = getHumanChoise();
-   let humanChoise4 = getHumanChoise();
-   let humanChoise5 = getHumanChoise();
+const options = document.querySelector("#options");
+const results = document.querySelector("#results");
+const choices = document.querySelector("#choices");
 
-   let computerChoise1 = getComputerChoise();
-   let computerChoise2 = getComputerChoise();
-   let computerChoise3 = getComputerChoise();
-   let computerChoise4 = getComputerChoise();
-   let computerChoise5 = getComputerChoise();
+options.addEventListener("click", (e) => {
+   let target = e.target;
+   
+   switch (target.id) {
+      case "rock":
+         let computerChoice = getComputerChoice();
+         choices.textContent = `Choices:  You  rock : ${computerChoice}  Computer`;
+         let choice = playRound("rock", computerChoice);
+         results.textContent = `Results:  You  ${choice}  Computer`;
+         break;
+      case "paper":
+         let computerChoice2 = getComputerChoice();
+         choices.textContent = `Choices:  You  paper : ${computerChoice2}  Computer`;
+         let choice2 = playRound("paper", computerChoice2);
+         results.textContent = `Results:  You  ${choice2}  Computer`;
+         break;
+      case "scissors":
+         let computerChoice3 = getComputerChoice();
+         choices.textContent = `Choices:  You  scissors : ${computerChoice3}  Computer`;
+         let choice3 = playRound("scissors", computerChoice3);
+         results.textContent = `Results:  You  ${choice3}  Computer`;
+         break;
+      default:
+         break;
+    }
+    const finalResults = document.querySelector("#finalResults");
 
-   console.log(computerChoise1);
-   console.log(humanChoise1);
-   console.log(playRound(humanChoise1, computerChoise1));
-   console.log(computerChoise2);
-   console.log(humanChoise2);
-   console.log(playRound(humanChoise2, computerChoise2));
-   console.log(computerChoise3);
-   console.log(humanChoise3);
-   console.log(playRound(humanChoise3, computerChoise3));
-   console.log(computerChoise4);
-   console.log(humanChoise4);
-   console.log(playRound(humanChoise4, computerChoise4));
-   console.log(computerChoise5);
-   console.log(humanChoise5);
-   console.log(playRound(humanChoise5, computerChoise5));
+    if (humanScore == 10) {
+       let humanWin = `Final Score is:  You  ${humanScore} : ${computerScore}  Computer\nHuman Wins!`;
+       finalResults.textContent = (humanWin);
+    } else if (computerScore == 10){
+       let computerWin = `Final Score is: Human ${humanScore} : ${computerScore} Computer\nComputer Wins!`;
+       finalResults.textContent = computerWin;
+    };
 
-   if (humanScore > computerScore) {
-      let humanWin = `Final Score is: Human ${humanScore} : ${computerScore} Computer\nHuman Wins`;
-      return humanWin;
-   } else if (humanScore < computerScore) {
-      let computerWin = `Final Score is: Human ${humanScore} : ${computerScore} Computer\nComputer Wins`;
-      return computerWin;
-   } else {
-      return "Draw";
-   }
-}
-
-console.log(playGame())
-
+    finalResults.style.whiteSpace = "pre-line";
+});
